@@ -8,9 +8,11 @@ export interface Context {
   req: any // HTTP request carrying the `Authorization` header
 }
 
-export async function createContext(req: any) {
+export async function createContext({req}: any) {
+  const role = req?.headers?.admin ? 'admin' : 'user'
   return {
     ...req,
     prisma,
+    role
   }
 }
