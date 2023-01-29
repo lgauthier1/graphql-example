@@ -1,5 +1,5 @@
-import { default as hello } from './helloResolver'
-import { default as user } from './userResolver'
+import hello from './helloResolver'
+import user from './userResolver'
 
 export default {
   Query: {

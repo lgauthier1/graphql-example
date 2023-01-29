@@ -1,4 +1,4 @@
-import { default as hello } from './hello'
-import { default as user } from './user'
+import hello from './hello'
+import user from './user'
 
 export default [hello, user]

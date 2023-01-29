@@ -1,13 +1,9 @@
 import { PrismaClient } from '@prisma/client'
+import { Context } from './utils/types'
 
 const prisma = new PrismaClient()
 
-export interface Context {
-  prisma: PrismaClient
-  req: any // HTTP request carrying the `Authorization` header
-}
-
-export async function createContext({ req }: any) {
+export async function createContext({ req }: Context) {
   const role = req?.headers?.admin ? 'admin' : 'user'
   return {
     ...req,
