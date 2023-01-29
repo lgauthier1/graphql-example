@@ -8,5 +8,5 @@ export default {
   },
   Mutation: {
     ...user.Mutation
-  },
+  }
 }

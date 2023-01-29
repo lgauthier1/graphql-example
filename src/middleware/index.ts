@@ -16,4 +16,4 @@ const dataFiltering = async (resolve, root, args, context, info) => {
   return result
 }
 
-export  {authMiddleWare, dataFiltering }
+export { authMiddleWare, dataFiltering }

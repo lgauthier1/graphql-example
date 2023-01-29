@@ -12,6 +12,6 @@ const typeDefs = `#graphql
     "Create a new user"
      create(email: String!, firstname: String!, name: String!, age: Int!): User
   }
-`;
+`
 
 export default [typeDefs]

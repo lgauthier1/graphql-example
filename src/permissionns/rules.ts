@@ -4,7 +4,7 @@ import { rule } from 'graphql-shield'
 export const isAdmin = rule({ cache: false })(
   // @ts-ignore
   async (parent, args, ctx: Context, info) => {
-    if(ctx.role === 'admin') return true
+    if (ctx.role === 'admin') return true
     return false
-  },
+  }
 )
