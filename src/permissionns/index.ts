@@ -3,7 +3,7 @@ import * as rules from './rules'
 
 export const permissions = shield({
   Mutation: {
-    create: rules.isAdmin,
+    create: rules.isAdmin
   },
   User: {
     id: rules.isAdmin

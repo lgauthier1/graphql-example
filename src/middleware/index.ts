@@ -1,4 +1,3 @@
-// @ts-ignore
 const authMiddleWare = async (resolve, root, args, context, info) => {
   console.log('######### authMiddleWare BEGIN')
   // console.log(`1. logInput: ${JSON.stringify(args)}`)
@@ -8,7 +7,6 @@ const authMiddleWare = async (resolve, root, args, context, info) => {
   return result
 }
 
-// @ts-ignore
 const dataFiltering = async (resolve, root, args, context, info) => {
   console.log('######### dataFiltering beginn')
   const result = await resolve(root, args, context, info)
@@ -16,4 +14,4 @@ const dataFiltering = async (resolve, root, args, context, info) => {
   return result
 }
 
-export  {authMiddleWare, dataFiltering }
+export { authMiddleWare, dataFiltering }

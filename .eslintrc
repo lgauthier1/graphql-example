@@ -1,0 +1,19 @@
+// https://dev.to/itmayziii/typescript-eslint-and-standardjs-5hmd
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint",
+    "prettier"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "standard",
+    "prettier"
+  ],
+  "rules": {
+    "no-console": 0 // Remember, this means error!
+  }
+}

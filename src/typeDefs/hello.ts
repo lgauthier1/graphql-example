@@ -3,6 +3,6 @@ const typeDefs = `#graphql
     "Awsome hello query"
     hello: String,
   }
-`;
+`
 
 export default [typeDefs]
