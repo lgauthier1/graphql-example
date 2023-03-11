@@ -12,7 +12,7 @@ export default {
         data: {
           email: args.email,
           username: args.username,
-          password: args.password
+          password: args.password // todo crypt
         }
       })
       const accessToken: string = createToken(TokenType.accessToken, user)
