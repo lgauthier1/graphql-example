@@ -10,22 +10,20 @@ const HELLO = gql`
   }
 `
 
-it('returns hello with the provided name', async () => {
-  const testServer = new ApolloServer({
-    typeDefs,
-    resolvers
-  })
+describe('Hello resolver', () => {
+  it('returns Hello World', async () => {
+    const testServer = new ApolloServer({
+      typeDefs,
+      resolvers
+    })
 
-  const response = await testServer.executeOperation({
-    query: HELLO,
-    variables: {}
+    const response = await testServer.executeOperation({
+      query: HELLO,
+      variables: {}
+    })
+    assert(response)
+    assert(response.data)
+    assert(response.data.hello)
+    expect(response?.data.hello).toBe('hello world')
   })
-
-  // Note the use of Node's assert rather than Jest's expect; if using
-  // TypeScript, `assert`` will appropriately narrow the type of `body`
-  // and `expect` will not.
-  assert(response)
-  assert(response.data)
-  assert(response.data.hello)
-  expect(response?.data.hello).toBe('hello world2')
 })
