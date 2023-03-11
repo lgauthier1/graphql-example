@@ -6,11 +6,8 @@ const typeDefs = `#graphql
     age: Int
   }
   type Query {
+    "List all Users (admin only)"
     allUsers: [User],
-  }
-  type Mutation {
-    "Create a new user"
-     create(email: String!, firstname: String!, name: String!, age: Int!): User
   }
 `
 

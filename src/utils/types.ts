@@ -7,3 +7,19 @@ export type Context = {
   prisma: PrismaClient
   role: string
 }
+
+export type RegisterInput = {
+  email: string
+  username: string
+  password: string
+}
+
+export enum TokenType {
+  accessToken,
+  refreshToken
+}
+
+export type Tokens = {
+  accessToken: string
+  refreshToken: string
+}

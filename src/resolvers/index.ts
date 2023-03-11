@@ -1,5 +1,6 @@
 import hello from './helloResolver'
 import user from './userResolver'
+import authentification from './authentificationResolver'
 
 export default {
   Query: {
@@ -7,6 +8,6 @@ export default {
     ...user.Query
   },
   Mutation: {
-    ...user.Mutation
+    ...authentification.Mutation
   }
 }

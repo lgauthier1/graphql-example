@@ -14,6 +14,8 @@
     "prettier"
   ],
   "rules": {
-    "no-console": 0 // Remember, this means error!
+    "no-console": 0, // Remember, this means error!
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "error"
   }
 }
