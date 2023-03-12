@@ -1,5 +1,6 @@
 import { createToken } from '../utils/authentification'
 import { RegisterInput, TokenType, Context, Tokens } from '../utils/types'
+import { createUser } from '../services/user'
 
 export default {
   Mutation: {
@@ -8,13 +9,7 @@ export default {
       args: RegisterInput,
       context: Context
     ): Promise<Tokens> {
-      const user = await context.prisma.user.create({
-        data: {
-          email: args.email,
-          username: args.username,
-          password: args.password // todo crypt
-        }
-      })
+      const user = await createUser(context.prisma, args)
       const accessToken: string = createToken(TokenType.accessToken, user)
       const refreshToken: string = createToken(TokenType.refreshToken, user)
       return { accessToken, refreshToken }

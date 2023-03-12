@@ -5,10 +5,6 @@ import jwt from 'jsonwebtoken'
 import assert from 'node:assert'
 
 interface JwtPayload {
-  id: string
-  iss?: string | undefined
-  sub?: string | undefined
-  aud?: string | string[] | undefined
   exp: number
   email?: string | undefined
 }
@@ -28,7 +24,7 @@ const getJwtPayLoad = (jwtToken: string) => {
   return decodedAccessToken?.payload as JwtPayload
 }
 
-describe('Authentifications utilities', () => {
+describe('UTILS: Authentifications utilities', () => {
   const testUser: User = {
     id: 0,
     email: 'test@gmail.com',
@@ -50,7 +46,7 @@ describe('Authentifications utilities', () => {
     expect(Math.abs(payLoad.exp - expectedExpiration / 1000)).toBeLessThan(10) // could be equal but prend slow test in cicd
   })
 
-  it('test create an refresh token with a validity of 2 days', async () => {
+  it('test create a refresh token with a validity of 2 days', async () => {
     const expectedExpiration = defineExpectedExpiration(2 * 24 * 60 * 60)
     const refreshToken = createToken(TokenType.refreshToken, testUser)
     const payLoad = getJwtPayLoad(refreshToken)
@@ -59,9 +55,5 @@ describe('Authentifications utilities', () => {
     expect(payLoad).toBeDefined()
     expect(payLoad.email).toEqual(testUser.email)
     expect(Math.abs(payLoad.exp - expectedExpiration / 1000)).toBeLessThan(10) // could be equal but prend slow test in cicd
-  })
-
-  it('test create an unexpected token type', async () => {
-    expect(1).toEqual(1)
   })
 })

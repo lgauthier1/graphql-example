@@ -10,7 +10,7 @@ const HELLO = gql`
   }
 `
 
-describe('Hello resolver', () => {
+describe('RESOLVERS: Hello resolver', () => {
   it('returns Hello World', async () => {
     const testServer = new ApolloServer({
       typeDefs,
