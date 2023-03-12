@@ -1,4 +1,5 @@
-import { createToken } from './authentification'
+import { createToken, hashPassword, comparePassword } from './authentification'
+import { AuthenticationError } from 'apollo-server-express'
 import { TokenType } from './types'
 import { User } from '@prisma/client'
 import jwt from 'jsonwebtoken'
@@ -35,7 +36,7 @@ describe('UTILS: Authentifications utilities', () => {
     updatedAt: new Date()
   }
 
-  it('test create an access token with a validity of 30 second', async () => {
+  it('create an access token with a validity of 30 second', async () => {
     const expectedExpiration = defineExpectedExpiration(30)
     const accessToken = createToken(TokenType.accessToken, testUser)
     const payLoad = getJwtPayLoad(accessToken)
@@ -46,7 +47,7 @@ describe('UTILS: Authentifications utilities', () => {
     expect(Math.abs(payLoad.exp - expectedExpiration / 1000)).toBeLessThan(10) // could be equal but prend slow test in cicd
   })
 
-  it('test create a refresh token with a validity of 2 days', async () => {
+  it('create a refresh token with a validity of 2 days', async () => {
     const expectedExpiration = defineExpectedExpiration(2 * 24 * 60 * 60)
     const refreshToken = createToken(TokenType.refreshToken, testUser)
     const payLoad = getJwtPayLoad(refreshToken)
@@ -55,5 +56,24 @@ describe('UTILS: Authentifications utilities', () => {
     expect(payLoad).toBeDefined()
     expect(payLoad.email).toEqual(testUser.email)
     expect(Math.abs(payLoad.exp - expectedExpiration / 1000)).toBeLessThan(10) // could be equal but prend slow test in cicd
+  })
+
+  it('hash a password and compare it with the good value', () => {
+    const plainPassword = 'mysecretpassword'
+    const hased = hashPassword(plainPassword)
+    const isEqual = comparePassword(plainPassword, hased)
+    expect(isEqual).toBeTruthy()
+  })
+
+  it('hash a password and compare it with the wrong value to throw AuthenticationError', () => {
+    const plainPassword = 'mysecretpassword'
+    const hased = hashPassword(plainPassword)
+
+    expect(() => comparePassword('wrongPasswoard', hased)).toThrow(
+      AuthenticationError
+    )
+    expect(() => comparePassword('wrongPasswoard', hased)).toThrow(
+      'wrong_email_password'
+    )
   })
 })

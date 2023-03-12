@@ -1,5 +1,6 @@
 import { RegisterInput } from '../utils/types'
 import { PrismaClient } from '@prisma/client'
+import { hashPassword } from '../utils/authentification'
 
 export const createUser = async (
   prisma: PrismaClient,
@@ -9,7 +10,7 @@ export const createUser = async (
     data: {
       email: userRegister.email,
       username: userRegister.username,
-      password: userRegister.password // todo crypt
+      password: hashPassword(userRegister.password)
     }
   })
   return user
