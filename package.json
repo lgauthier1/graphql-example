@@ -10,7 +10,7 @@
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write",
-    "test": "jest",
+    "test": "jest --silent=false --verbose --runInBand",
     "prepare": "husky install"
   },
   "keywords": [],

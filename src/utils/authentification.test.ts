@@ -5,7 +5,6 @@ import jwt from 'jsonwebtoken'
 import assert from 'node:assert'
 
 interface JwtPayload {
-  [key: string]: any
   id: string
   iss?: string | undefined
   sub?: string | undefined
@@ -14,33 +13,52 @@ interface JwtPayload {
   email?: string | undefined
 }
 
+const defineExpectedExpiration = (validity: number): number => {
+  const expectedExpiration = new Date()
+  const d = expectedExpiration.setSeconds(
+    expectedExpiration.getSeconds() + validity
+  )
+  return d
+}
+
+const getJwtPayLoad = (jwtToken: string) => {
+  const decodedAccessToken = jwt.decode(jwtToken.split(' ')[1], {
+    complete: true
+  })
+  return decodedAccessToken?.payload as JwtPayload
+}
+
 describe('Authentifications utilities', () => {
-  it('test create an access token', async () => {
-    const testUser: User = {
-      id: 0,
-      email: 'test@gmail.com',
-      username: 'test username',
-      confirmed: false,
-      password: 'mypassword',
-      createAt: new Date(),
-      updatedAt: new Date()
-    }
+  const testUser: User = {
+    id: 0,
+    email: 'test@gmail.com',
+    username: 'test username',
+    confirmed: false,
+    password: 'mypassword',
+    createAt: new Date(),
+    updatedAt: new Date()
+  }
+
+  it('test create an access token with a validity of 30 second', async () => {
+    const expectedExpiration = defineExpectedExpiration(30)
     const accessToken = createToken(TokenType.accessToken, testUser)
-    const decodedAccessToken = jwt.decode(accessToken.split(' ')[1], {
-      complete: true
-    })
-    const payLoad = decodedAccessToken?.payload as JwtPayload
-    console.log(payLoad)
-    console.log(new Date(payLoad.exp))
+    const payLoad = getJwtPayLoad(accessToken)
     assert(accessToken)
     expect(accessToken.startsWith('Bearer ')).toBeTruthy()
-    assert(decodedAccessToken)
     expect(payLoad).toBeDefined()
     expect(payLoad.email).toEqual(testUser.email)
+    expect(Math.abs(payLoad.exp - expectedExpiration / 1000)).toBeLessThan(10) // could be equal but prend slow test in cicd
   })
 
-  it('test create an refresh token', async () => {
-    expect(1).toEqual(1)
+  it('test create an refresh token with a validity of 2 days', async () => {
+    const expectedExpiration = defineExpectedExpiration(2 * 24 * 60 * 60)
+    const refreshToken = createToken(TokenType.refreshToken, testUser)
+    const payLoad = getJwtPayLoad(refreshToken)
+    assert(refreshToken)
+    expect(refreshToken.startsWith('Bearer ')).toBeTruthy()
+    expect(payLoad).toBeDefined()
+    expect(payLoad.email).toEqual(testUser.email)
+    expect(Math.abs(payLoad.exp - expectedExpiration / 1000)).toBeLessThan(10) // could be equal but prend slow test in cicd
   })
 
   it('test create an unexpected token type', async () => {
