@@ -1,7 +1,7 @@
 import { User } from '@prisma/client'
 import jwt from 'jsonwebtoken'
 import { TokenType, DecodedToken, Context } from './types'
-import { AuthenticationError } from 'apollo-server-express'
+import { AuthenticationError, ForbiddenError } from 'apollo-server-express'
 import { getUserByEmail } from '../services/user'
 import bcrypt from 'bcrypt'
 
@@ -45,6 +45,29 @@ export const createToken = (tokenType: TokenType, user: User): string => {
   }
 }
 
+export const verifyToken = (tokenType: TokenType, token: string) => {
+  token = token.split(' ')[1]
+  try {
+    switch (tokenType) {
+      case TokenType.accessToken:
+        return jwt.verify(token, accessTokenSecret) as DecodedToken
+      case TokenType.refreshToken:
+        console.log('verify refresh...', jwt.verify(token, refreshTokenSecret))
+        return jwt.verify(token, refreshTokenSecret) as DecodedToken
+      default:
+        throw new Error('Unknow_TokenType')
+    }
+  } catch (error) {
+    if (error instanceof jwt.TokenExpiredError) {
+      console.log(`${TokenType[tokenType]}_expired`)
+      throw new ForbiddenError(`${TokenType[tokenType]}_expired`)
+    } else {
+      console.log(`${TokenType[tokenType]}_invalid`)
+      throw new ForbiddenError(`${TokenType[tokenType]}_invalid`)
+    }
+  }
+}
+
 export const getContextWithAuth = async (
   context: Context
 ): Promise<Context> => {
@@ -55,7 +78,6 @@ export const getContextWithAuth = async (
       accessToken.split(' ')[1],
       accessTokenSecret
     ) as DecodedToken
-    console.log(decodedToken)
     const user = await getUserByEmail(context.prisma, decodedToken.email)
     if (user === null) return { ...context }
     return { ...context, user }

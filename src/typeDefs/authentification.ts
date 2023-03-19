@@ -14,6 +14,8 @@ const typeDefs = gql`
   type Query {
     "Login method"
     login(email: String!, password: String!): Tokens
+    "Refresh accessToken"
+    refreshTokens(refreshToken: String!): Tokens
   }
 `
 

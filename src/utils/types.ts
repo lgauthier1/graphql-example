@@ -36,3 +36,7 @@ export type DecodedToken = {
   iat: number
   exp: number
 }
+
+export type refreshTokensInput = {
+  refreshToken: string
+}

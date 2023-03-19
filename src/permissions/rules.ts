@@ -2,6 +2,7 @@ import { rule } from 'graphql-shield'
 import { Context } from '../utils/types'
 
 export const isPublic = rule({ cache: 'contextual' })(async () => {
+  console.log('IS PULIC')
   return true
 })
 
