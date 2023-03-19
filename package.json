@@ -11,6 +11,8 @@
     "lint:fix": "eslint . --ext .ts --fix",
     "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write",
     "test": "jest --silent=false --verbose --runInBand",
+    "test:coverage": "jest --collect-coverage",
+    "test:db": "sh test.sh",
     "prepare": "husky install"
   },
   "keywords": [],

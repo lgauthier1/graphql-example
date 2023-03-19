@@ -5,7 +5,8 @@ import authentification from './authentificationResolver'
 export default {
   Query: {
     ...hello.Query,
-    ...user.Query
+    ...user.Query,
+    ...authentification.Query
   },
   Mutation: {
     ...authentification.Mutation

@@ -10,6 +10,11 @@ const typeDefs = gql`
     "Register a new user"
     register(username: String!, email: String!, password: String!): Tokens
   }
+
+  type Query {
+    "Login method"
+    login(email: String!, password: String!): Tokens
+  }
 `
 
 export default [typeDefs]

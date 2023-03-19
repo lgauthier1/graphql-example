@@ -1,4 +1,4 @@
-import { MockContext, createMockContext } from '../context'
+import { MockContext, createMockContext } from '../prisma'
 import { Context } from '../utils/types'
 import { createUser } from './user'
 import { User } from '@prisma/client'
