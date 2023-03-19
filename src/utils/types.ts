@@ -1,11 +1,12 @@
 import { Request, Response } from 'express'
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, User } from '@prisma/client'
 
 export type Context = {
   req: Request
-  res: Response
+  res?: Response
   prisma: PrismaClient
-  role: string
+  user?: User
+  role?: string
 }
 
 export type LoginInput = {
@@ -21,10 +22,17 @@ export type RegisterInput = {
 
 export enum TokenType {
   accessToken,
-  refreshToken
+  refreshToken,
+  unknown
 }
 
 export type Tokens = {
   accessToken: string
   refreshToken: string
+}
+
+export type DecodedToken = {
+  email: string
+  iat: number
+  exp: number
 }

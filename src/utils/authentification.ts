@@ -1,7 +1,8 @@
 import { User } from '@prisma/client'
 import jwt from 'jsonwebtoken'
-import { TokenType } from './types'
+import { TokenType, DecodedToken, Context } from './types'
 import { AuthenticationError } from 'apollo-server-express'
+import { getUserByEmail } from '../services/user'
 import bcrypt from 'bcrypt'
 
 // TODO LOG WARNING MISSING SECRET IN .ENV
@@ -41,5 +42,27 @@ export const createToken = (tokenType: TokenType, user: User): string => {
       )
     default:
       throw new Error('Unknow_TokenType')
+  }
+}
+
+export const getContextWithAuth = async (
+  context: Context
+): Promise<Context> => {
+  const accessToken = context.req.headers.authorization || ''
+  if (!accessToken) return context
+  try {
+    const decodedToken = jwt.verify(
+      accessToken.split(' ')[1],
+      accessTokenSecret
+    ) as DecodedToken
+    console.log(decodedToken)
+    const user = await getUserByEmail(context.prisma, decodedToken.email)
+    if (user === null) return { ...context }
+    return { ...context, user }
+  } catch (error) {
+    if (error instanceof jwt.TokenExpiredError) {
+      throw new AuthenticationError('accessToken_expired')
+    }
+    return { ...context }
   }
 }

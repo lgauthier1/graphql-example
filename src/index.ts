@@ -4,14 +4,13 @@ import { makeExecutableSchema } from '@graphql-tools/schema'
 import { createContext } from './context'
 import { applyMiddleware } from 'graphql-middleware'
 // import { authMiddleWare, dataFiltering } from "./middleware"
-// import { permissions } from './permissionns'
+import { permissions } from './permissions'
 import typeDefs from './typeDefs'
 import resolvers from './resolvers'
 
 const schema = makeExecutableSchema({ typeDefs, resolvers })
 // const schemaWithMiddleware = applyMiddleware(schema, authMiddleWare, dataFiltering)
-// const schemaWithMiddleware = applyMiddleware(schema, permissions)
-const schemaWithMiddleware = applyMiddleware(schema)
+const schemaWithMiddleware = applyMiddleware(schema, permissions)
 
 const server = new ApolloServer({
   schema: schemaWithMiddleware,

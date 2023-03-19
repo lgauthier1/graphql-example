@@ -58,6 +58,13 @@ describe('UTILS: Authentifications utilities', () => {
     expect(Math.abs(payLoad.exp - expectedExpiration / 1000)).toBeLessThan(10) // could be equal but prend slow test in cicd
   })
 
+  it('create an unknown tokentype', async () => {
+    // to increase test coverage
+    expect(() => createToken(TokenType.unknown, testUser)).toThrow(
+      'Unknow_TokenType'
+    )
+  })
+
   it('hash a password and compare it with the good value', () => {
     const plainPassword = 'mysecretpassword'
     const hased = hashPassword(plainPassword)

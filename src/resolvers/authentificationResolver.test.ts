@@ -16,6 +16,15 @@ beforeEach(() => {
   ctx = mockCtx as unknown as Context
 })
 
+const QUERY_REGISTER = gql`
+  mutation Mutation($username: String!, $email: String!, $password: String!) {
+    register(username: $username, email: $email, password: $password) {
+      accessToken
+      refreshToken
+    }
+  }
+`
+
 const QUERY_LOGIN = gql`
   query Query($email: String!, $password: String!) {
     login(email: $email, password: $password) {
@@ -34,7 +43,7 @@ const expected: User = {
   updatedAt: new Date()
 }
 
-describe('RESOLVERS: Authentification resolver', () => {
+describe('RESOLVERS: Authentification resolver - Login', () => {
   it('login with existing user and correct password', async () => {
     const testServer = new ApolloServer({
       typeDefs,
@@ -117,5 +126,34 @@ describe('RESOLVERS: Authentification resolver', () => {
     assert(response?.errors)
     expect(response?.errors[0].message).toEqual('wrong_email_or_password')
     expect(response?.errors[0]?.extensions?.code).toEqual('UNAUTHENTICATED')
+  })
+})
+
+describe('RESOLVERS: Authentification resolver - Register', () => {
+  it('register a new user', async () => {
+    const testServer = new ApolloServer({
+      typeDefs,
+      resolvers,
+      context: ctx
+    })
+    // MOCK Prisma answer
+    ;(
+      ctx.prisma.user.create as jest.MockedFunction<
+        typeof ctx.prisma.user.create
+      >
+    ).mockResolvedValue(expected)
+    const response = await testServer.executeOperation({
+      query: QUERY_REGISTER,
+      variables: {
+        email: 'test@gmail.com',
+        username: 'test',
+        password: 'secret'
+      }
+    })
+    assert(response.data)
+    assert(response.data.register.accessToken)
+    assert(response.data.register.refreshToken)
+    expect(response.data.register.accessToken).toBeDefined()
+    expect(response.data.register.refreshToken).toBeDefined()
   })
 })

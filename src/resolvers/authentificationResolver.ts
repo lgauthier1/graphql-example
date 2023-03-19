@@ -7,7 +7,7 @@ import {
   Tokens
 } from '../utils/types'
 import { User } from '@prisma/client'
-import { createUser } from '../services/user'
+import { createUser, getUserByEmail } from '../services/user'
 import { AuthenticationError } from 'apollo-server-express'
 
 export default {
@@ -31,9 +31,7 @@ export default {
     ): Promise<Tokens> {
       if (!args.email || !args.password)
         throw new AuthenticationError('wrong_email_or_password')
-      const user: User | null = await context.prisma.user.findUnique({
-        where: { email: args.email }
-      })
+      const user: User | null = await getUserByEmail(context.prisma, args.email)
       if (!user) throw new AuthenticationError('wrong_email_or_password')
       await comparePassword(args.password, user.password)
       const accessToken: string = createToken(TokenType.accessToken, user)
