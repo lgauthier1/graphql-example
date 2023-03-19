@@ -29,6 +29,8 @@ export default {
       args: LoginInput,
       context: Context
     ): Promise<Tokens> {
+      if (!args.email || !args.password)
+        throw new AuthenticationError('wrong_email_or_password')
       const user: User | null = await context.prisma.user.findUnique({
         where: { email: args.email }
       })
