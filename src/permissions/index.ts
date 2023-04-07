@@ -16,7 +16,8 @@ export const permissions = shield(
   },
   {
     async fallbackError(exception) {
-      if (exception instanceof ApolloError) return exception // expected errors
+      console.log('fallbackError')
+      // if (exception instanceof ApolloError) return exception // expected errors
       if (exception instanceof Error) {
         // unexpected errors
         console.error(exception)
