@@ -9,6 +9,7 @@ const typeDefs = gql`
   type Mutation {
     "Register a new user"
     register(username: String!, email: String!, password: String!): Tokens
+    changePassword(password: String!): Tokens
   }
 
   type Query {

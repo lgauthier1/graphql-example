@@ -10,10 +10,15 @@ import {
   Context,
   Tokens,
   DecodedToken,
-  refreshTokensInput
+  refreshTokensInput,
+  changePasswordInput
 } from '../utils/types'
 import { User } from '@prisma/client'
-import { createUser, getUserByEmail } from '../services/user'
+import {
+  createUser,
+  getUserByEmail,
+  updateUserPassword
+} from '../services/user'
 import { AuthenticationError, ForbiddenError } from 'apollo-server-express'
 
 export default {
@@ -26,6 +31,23 @@ export default {
       const user = await createUser(context.prisma, args)
       const accessToken: string = createToken(TokenType.accessToken, user)
       const refreshToken: string = createToken(TokenType.refreshToken, user)
+      return { accessToken, refreshToken }
+    },
+    async changePassword(
+      _parent: undefined,
+      args: changePasswordInput,
+      context: Context
+    ): Promise<Tokens> {
+      if (!context.user) throw new AuthenticationError('unknow_user')
+      updateUserPassword(context.prisma, context.user.id, args.password)
+      const accessToken: string = createToken(
+        TokenType.accessToken,
+        context.user
+      )
+      const refreshToken: string = createToken(
+        TokenType.refreshToken,
+        context.user
+      )
       return { accessToken, refreshToken }
     }
   },

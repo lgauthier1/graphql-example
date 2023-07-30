@@ -21,3 +21,16 @@ export const getUserByEmail = async (prisma: PrismaClient, email: string) => {
     where: { email }
   })
 }
+
+export const updateUserPassword = async (
+  prisma: PrismaClient,
+  id: number,
+  password: string
+) => {
+  return await prisma.user.update({
+    where: { id },
+    data: {
+      password: hashPassword(password)
+    }
+  })
+}

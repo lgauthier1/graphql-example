@@ -40,3 +40,7 @@ export type DecodedToken = {
 export type refreshTokensInput = {
   refreshToken: string
 }
+
+export type changePasswordInput = {
+  password: string
+}

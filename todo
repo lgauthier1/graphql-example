@@ -1,0 +1,15 @@
+
+
+Ecrire méthodes
+- refreshTokens
+- forgotPassword
+- confirmEmail
+- changePassword
+
+Ecrire une méthode de data
+
+
+
+Ecire le test de la méthode register via une BD
+- Je veux setup une db de testDocker
+- Ecrire des tests via le shield

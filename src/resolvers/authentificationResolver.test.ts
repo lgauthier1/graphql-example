@@ -8,14 +8,6 @@ import assert from 'node:assert'
 import typeDefs from '../typeDefs'
 import resolvers from '.'
 
-let mockCtx: MockContext
-let ctx: Context
-
-beforeEach(() => {
-  mockCtx = createMockContext()
-  ctx = mockCtx as unknown as Context
-})
-
 const QUERY_REGISTER = gql`
   mutation Mutation($username: String!, $email: String!, $password: String!) {
     register(username: $username, email: $email, password: $password) {
