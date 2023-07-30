@@ -4,7 +4,7 @@ import { makeExecutableSchema } from '@graphql-tools/schema'
 import { createContext } from './context'
 import { applyMiddleware } from 'graphql-middleware'
 // import { authMiddleWare, dataFiltering } from "./middleware"
-import { permissions } from './permissionns'
+import { permissions } from './permissions'
 import typeDefs from './typeDefs'
 import resolvers from './resolvers'
 

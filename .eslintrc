@@ -4,8 +4,12 @@
   "parser": "@typescript-eslint/parser",
   "plugins": [
     "@typescript-eslint",
-    "prettier"
+    "prettier",
+    "jest"
   ],
+  "env": {
+    "jest/globals": true
+  },
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
@@ -14,6 +18,13 @@
     "prettier"
   ],
   "rules": {
-    "no-console": 0 // Remember, this means error!
+    "no-console": 0, // Remember, this means error!
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "error",
+    "jest/no-disabled-tests": "warn",
+    "jest/no-focused-tests": "error",
+    "jest/no-identical-title": "error",
+    "jest/prefer-to-have-length": "warn",
+    "jest/valid-expect": "error"
   }
 }
